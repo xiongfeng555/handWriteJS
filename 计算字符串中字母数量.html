@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 描述：输入一串字符串，根据字符串求出每个字母的数量并返回结果对象。（数字为1时可省略）
+      // 示例一：输入：A3B2，输出：{"A": 3, "B": 2}
+      // 示例二：输入：A(A(A2B)2)3C2，输出：{"A": 16, "B": 6, "C": 2}
+      let str = 'A3B2'
+      function getCount(s) {
+        let strStack = []
+        let numStack = []
+        let num = 1
+        let str = ''
+        for (let i = s.length - 1; i >= 0; i--) {
+          if (s[i] >= '0' && s[i] <= '9') {
+            num = parseInt(s[i])
+          } else if (s[i] >= 'A' && s[i] <= 'Z') {
+            str = help(s[i], num) + str
+            num = 1
+          } else if (s[i] === ')') {
+            strStack.push(str)
+            numStack.push(num)
+            str = ''
+            num = 1
+          } else {
+            str = help(str, numStack.pop()) + strStack.pop()
+          }
+        }
+
+        let res = {}
+        for (let i = 0; i < str.length; i++) {
+          res[str[i]] = (res[str[i]] || 0) + 1
+        }
+        return res
+      }
+      function help(s, count) {
+        if (s === '' || count === 0) return ''
+        let str = ''
+        while (count) {
+          str += s
+          count--
+        }
+        return str
+      }
+    </script>
+  </body>
+</html>

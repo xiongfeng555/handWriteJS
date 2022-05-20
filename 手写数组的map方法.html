@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [
+            {
+                age:1
+            },
+            {
+                age:2
+            },
+            {
+                age:3
+            }
+        ]
+        Array.prototype.map = function(fn,thisValue=null){
+            let res = []
+            for(let i=0;i<this.length;i++){
+                let item = fn.call(thisValue,this[i],i,this)
+                res.push(item)
+            }
+            return res
+        }
+        let newArr = arr.map((i)=>{
+            i.age += 1
+            return i
+        })
+        console.log(newArr)
+    </script>
+</body>
+</html>

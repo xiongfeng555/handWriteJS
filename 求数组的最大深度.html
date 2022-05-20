@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [1,[2,3,4],[1,2,[1,2,3,4,[5,6,[7]]]],[7,8,9]]
+        const getMaxDep = (arr)=>{
+            if(!Array.isArray(arr)) return 0
+            let max = 1
+            for(let i=0;i<arr.length;i++){
+                if(Array.isArray(arr[i])){
+                    let tempLen = getMaxDep(arr[i]) + 1
+                    max = Math.max(max,tempLen)
+                }
+            }
+            return max
+        }
+        console.log(getMaxDep(arr))
+    </script>
+</body>
+</html>

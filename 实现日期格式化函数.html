@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function dateFormat(dataInput,format){
+            let year = dataInput.getFullYear()
+            let month = dataInput.getMonth() + 1
+            let day = dataInput.getDate()
+            format = format.replace(/yyyy/g,year)
+            format = format.replace(/mm/g,month)
+            format = format.replace(/dd/g,day)
+            return format
+        }
+        let s = dateFormat(new Date('2020-01-20'),'yyyy/mm/dd')
+        console.log(s)
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        width: 200px;
+        height: 200px;
+        background: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      let div = document.getElementsByTagName('div')[0]
+      function handleClick() {
+        console.log('click')
+      }
+      div.addEventListener('click', debounce(handleClick, 2000))
+      function debounce(fn, wait) {
+        let timer = null
+        let flag = true
+        return function () {
+          let self = this
+          let args = arguments
+          if (timer) {
+            clearTimeout(timer)
+          }
+          if (flag) {
+            flag = false
+            fn.apply(this, [...args])
+          }
+          timer = setTimeout(() => {
+            // fn.apply(self,args)
+            flag = true
+          }, wait)
+        }
+      }
+      function debounce(fn, delay) {
+        let timer = null
+        let context = this
+        return function () {
+          let args = [...arguments]
+          if (timer) {
+            clearTimeout(timer)
+          }
+          timer = setTimeout(() => {
+            fn.apply(context, args)
+          }, delay)
+        }
+      }
+    </script>
+  </body>
+</html>

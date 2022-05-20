@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+         // 手写call
+         Function.prototype.myCall = function(context){
+            if(typeof this !== 'function'){
+                throw new Error('myCall只能用函数调用')
+            }
+            let args = Array.from(arguments).slice(1)
+            let result = null
+            context = context || window
+            context.fn = this
+            result = context.fn(...args)
+            delete context.fn
+            return result
+        }
+         // 手写apply
+        Function.prototype.myApply = function(context){
+            if(typeof this !== 'function'){
+                throw new Error('myApply只能用函数调用')
+            }
+            context = context || window
+            let args = arguments[1]
+            let result = null
+            context.fn = this
+            if(args){
+                result = context.fn(...args)
+            }else{
+                result = context.fn()
+            }
+            delete context.fn
+            return result
+        }
+         // 手写bind
+         Function.prototype.myBind = function(context){
+             if(typeof this !== 'function'){
+                throw new Error('myBind只能用函数调用')
+             }
+             context = context || window
+             let args = Array.from(arguments).slice(1)
+             let fn = this
+             return function f(){
+                 return fn.myApply(
+                     this instanceof f ? this:context,
+                     args.concat(...arguments)
+                 )
+             }
+         }
+        let obj = {
+            name:'jack',
+            age:19,
+            sayName:function(){
+                console.log(this.name)
+            }
+        }
+        let myObj = {
+            name:'mary',
+            sayName:function(){
+                console.log(this.name)
+            }
+        }
+        let fn = obj.sayName.myBind(myObj)
+        console.log(fn())
+       
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 2000px;
+      }
+      div {
+        width: 200px;
+        height: 200px;
+        background: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <script>
+      window.addEventListener('scroll', throttle(handleScroll, 1000))
+      function handleScroll() {
+        console.log(this)
+      }
+      function throttle(fn, delay) {
+        let pre = Date.now()
+        return function () {
+          let self = this
+          let args = arguments
+          let now = Date.now()
+
+          if (now - pre >= delay) {
+            pre = now
+            return fn.apply(self, args)
+          }
+        }
+      }
+      // 定时器版
+      function throttle(fun, wait) {
+        let timeout = null
+        return function () {
+          let context = this
+          let args = [...arguments]
+          if (!timeout) {
+            fun.apply(context, args)
+            timeout = setTimeout(() => {
+              timeout = null
+            }, wait)
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

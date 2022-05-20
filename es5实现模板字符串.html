@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 使用replace方法搭配eval实现
+        String.prototype.myReplace = function(){
+            return this.replace(/\$\{(\w+)\}/g,function(matched,key){
+                console.log(key)
+                console.log(matched)
+                return eval(key)
+            })
+            
+        }
+        var name = '熊峰'
+        var age = '24'
+        var str = '我叫${name},年龄是${age}岁'
+        let newStr = str.myReplace()
+        console.log(newStr)
+    </script>
+</body>
+</html>

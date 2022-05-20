@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function getJSON(obj){
+            return new Promise((resolve,reject)=>{
+                let method = obj.method || 'GET'
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState === 4){
+                        if(xhr.status >=200 && xhr.status<300 || xhr.status === 304){
+                            resolve(xhr.responseText)
+                        }
+                    }else{
+                        reject(xhr.statusText)
+                    }
+                }
+                xhr.onerror = function(){
+                    reject(new Error('出错了'))
+                }
+                xhr.ontimeout = function(){
+                    reject(new Error('超时了'))
+                }
+                if(method === 'POST'){
+                    xhr.open(method,obj.url,true)
+                    xhr.responseType = 'json'
+                    xhr.setRequestHeader('Content-Type','application/json')
+                    xhr.send(JSON.stringify(obj.data))
+                }else{
+                    let str = ''
+                    for(let key in obj.data){
+                        str += `&${encodeURIComponent(key)}=${encodeURIComponent(obj.data[key])}`
+                    }
+                    xhr.open(method,obj.url+'?' +str.substring(1),true)
+                    xhr.send(null)
+                }
+            })
+        }
+    </script>
+</body>
+</html>

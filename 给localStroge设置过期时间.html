@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const store = {
+          setExpireMap:function(key,expire){
+              let expireMap = localStorage.getItem('expire_map') || '{}'
+              localStorage.setItem(
+                  'expire_map',
+                  JSON.stringify(
+                      {
+                          ...JSON.parse(expireMap),
+                          [key]:expire
+                      }
+                  )
+              )
+          },
+          setItem:function(key,value,expire){
+              localStorage.setItem(key,value)
+              this.setExpireMap(key,expire)
+          },
+          getItem:function(key){
+              const expireMap = JSON.parse(localStorage.getItem('expire_map') || '{}')
+              if(expireMap[key] && expireMap[key] < Date.now()){
+                return localStorage.getItem(key)
+              }else{
+                localStorage.removeItem(key)
+                return null
+              }
+            
+          }
+      }
+      store.setItem('name','xiong',3000)
+    </script>
+  </body>
+</html>

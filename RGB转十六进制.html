@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 'rgb(xxx,xxx,xxx)' => '#xxxxxx' 或则 '#xyz'
+        function rgbToHex(rgb){
+            let hex = []
+            if(/^rgb\((\d{1,3}\,){2}(\d{1,3})\)$/.test(rgb)){
+                rgb.replace(/\d{1,3}/g,function(matched){
+                    hex.push(matched)
+                })
+            }else{
+                console.log('出错了')
+                return
+            }
+            let temp = hex.map(i=>{
+                let num = Number(i).toString(16)
+                if(num.length<2){
+                    num = '0' + num
+                }
+                return num
+            })
+            return '#' + temp.join('')
+        }
+        let rgb = 'rgb(12,254,253)'
+        console.log(rgbToHex(rgb))
+    </script>
+</body>
+</html>

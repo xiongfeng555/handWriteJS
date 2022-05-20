@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class EventCenter {
+            constructor(){
+                this.hander = {}
+            }
+            addEventListener(type,handle){
+                if(!type || !handle){
+                    throw new Error('缺失必要的参数')
+                }
+                if(!this.hander[type]){
+                    this.hander[type] = []
+                }
+                this.hander[type].push(handle)
+            }
+            dispatchEvent(type,params){
+                if(!type){
+                    throw new Error('缺失必要的参数')
+                }
+                if(!this.hander[type]){
+                    throw new Error('没有此类事件')
+                }else{
+                    this.hander[type].forEach(callback=>callback(...params))
+                }
+            }
+            removeEventListener(type,handle){
+                if(!type){
+                    throw new Error('缺失必要的参数')
+                }
+                if(!handle){
+                    delete this.hander[type]
+                }else if(!this.hander[type]){
+                    throw new Error('没有此类事件')
+                }else{
+                    let index = this.hander[type].findIndex(el=>el === handle)
+                    if(index===-1){
+                        throw new Error(`没有找到事件${handle}`)
+                    }else{
+                        this.hander[type].splice(index,1)
+                        if(this.hander[type].length === 0){
+                            delete this.hander[type]
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

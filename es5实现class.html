@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // let father = (function(){
+        //     const father = function(name){
+        //         "use strict";
+        //         console.log(new.target)
+        //         if(typeof new.target === undefined){
+        //             throw new Error("报错了")
+        //         }
+        //         this.name = name
+        //     }
+        //     Object.defineProperty(father.prototype,'getFatherName',{
+        //         value:function(){
+        //             if(typeof new.target === undefined){
+        //                 throw new Error("报错了")
+        //             }
+        //             console.log(this.name)
+        //         },
+        //         enumerable:false,
+        //         configurable:true,
+        //         writable:true
+        //     })
+        //     father.staticMethods = function(){
+        //         console.log('aaa')
+        //     }
+        //     return father
+        // })()
+        let father = function(name){
+            "use strict";
+            // if(typeof new.target === undefined){
+            //         throw new Error("报错了")
+            //     }
+            this.name = name
+            Object.defineProperty(father.prototype,'getFatherName',{
+                value:function(){
+                    // if(typeof new.target === undefined){
+                    //     throw new Error("报错了")
+                    // }
+                    console.log(this.name)
+                },
+                enumerable:false,
+                configurable:true,
+                writable:true
+            })
+            father.staticMethods = function(){
+                console.log('aaa')
+            }
+        }
+        father('aaa')
+        let f = new father('xiong')
+        f.getFatherName()
+    </script>
+</body>
+</html>

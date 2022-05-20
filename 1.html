@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function main(n) {
+        let count = 0
+        let arr = new Array(25).fill(0)
+        let sum = 0
+        let error = 0
+        for (let i = 0; i < 10; i++) {
+          arr[i] = 2
+        }
+        for (let i = 10; i < 20; i++) {
+          arr[i] = 4
+        }
+        for (let i = 20; i < 25; i++) {
+          arr[i] = 8
+        }
+        const backTrace = function (index) {
+          if (sum === n && error <= 3) {
+            count++
+            return
+          }
+          if (error >= 3) {
+            return
+          }
+          if (index >= 25) {
+            return
+          }
+          sum += arr[index]
+          backTrace(index + 1)
+          sum -= arr[index]
+          error += 1
+          backTrace(index + 1)
+          error -= 1
+        }
+        backTrace(0)
+        return count
+      }
+      console.log(main(94))
+      var a = function(){
+        this.b = 1
+        this.deleteONe = function(){
+          delete this
+        }
+      }
+      let c = new a()
+      c.deleteONe()
+      console.log(c)
+      // function TreeNode(val, left, right) {
+      //   this.val = val ? val : 0
+      //   this.left = left ? left : null
+      //   this.right = right ? right : null
+      // }
+      // function buildTree(arr){
+      //   if(arr.length === 0) return null
+      //   let val = arr[0]
+      //   let root = new TreeNode(val)
+      //   if(arr.length>=1){
+      //     root.left = buildTree(arr.slice(1))
+      //   }
+      //   if(arr.length>=2){
+      //     root.right = buildTree(arr.slice(2))
+      //   }
+      //   return root
+      // }
+      // let arr1 = [1, 1, 2, 0, 0, 4, 5]
+      // console.log(buildTree())
+    </script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+const data = [
+    { skill: 'javascript', user: 'Chad' },
+    { skill: 'javascript', user: 'Bill' },
+    { skill: 'javascript', user: 'Sue' },
+    { skill: 'html', user: 'Sue' },
+    { skill: 'css', user: 'Sue' },
+    { skill: 'css', user: 'Bill' }
+];
+        let result = []
+        data.forEach((item,i)=>{
+            let search = result.find((dataItem)=>dataItem.skill === item.skill)
+            if(search){
+                search.user.push(item.user)
+                search.count++
+            }else{
+                let search = {
+                    skill:item.skill,
+                    user:[item.user],
+                    count:1
+                }
+                result.push(search)
+            }
+        })
+        console.log(result)
+    </script>
+</body>
+</html>

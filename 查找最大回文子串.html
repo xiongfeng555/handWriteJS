@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let s = "cbbd"
+      function find(s) {
+        let n = s.length
+        let dp = new Array(n).fill(0).map((_) => new Array(n).fill(0))
+        for (let i = 0; i < n; i++) {
+          dp[i][i] = 1
+        }
+        let str = ''
+        let maxLen = 0
+        for (let j = 1; j < n; j++) {
+          for (let i = 0; i < j; i++) {
+            if (s[i] === s[j]) {
+              if (j - i < 3) {
+                dp[i][j] = 1
+              } else {
+                dp[i][j] = d[i + 1][j - 1]
+              }
+            } else {
+              dp[i][j] = 0
+            }
+            if (dp[i][j] === 1 && (j - i + 1) >maxLen) {
+              maxLen = j-i + 1
+              str = s.substring(i, j + 1)
+            }
+          }
+        }
+        return str
+      }
+      console.log(find(s))
+    </script>
+  </body>
+</html>

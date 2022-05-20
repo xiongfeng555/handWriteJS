@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var obj1 = {
+          a: 1,
+          b: {
+              c: 2,
+              d: 3
+          },
+          e: 4,
+          h: {
+              i: 5
+          }
+      }
+      var obj2 = {
+          a: 111,
+          b: {
+              c: 222,
+              f: 333
+          },
+          g: 444,
+          h: 666
+      }
+      const mergeObject = (obj1,obj2)=>{
+          let obj = {}
+          let keys = Object.keys(obj1)
+          for(let i=0;i<keys.length;i++){
+              let key = keys[i]
+              if(obj2.hasOwnProperty(key)){ 
+                if(typeof obj1[key] === 'object' && typeof obj2[key] === 'object'){ // 如果都是引用类型需要合并
+                    obj[key] = mergeObject(obj1[key],obj2[key])
+                }else{ // 有一个是基本类型就以后一个为准
+                    obj[key] = obj2[key]
+                }
+              }else{ // obj2上没有obj1的属性时
+                  obj[key] = obj1[key]
+              }
+          }
+          return {...obj2,...obj}
+      }
+      console.log(mergeObject(obj1,obj2))
+    </script>
+  </body>
+</html>

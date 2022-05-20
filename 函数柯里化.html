@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // args保存总的参数，当参数数量达到函数参数数量时函数会执行
+      function curry(fn, args) {
+        let length = fn.length
+        args = args || []
+
+        return function () {
+          let subArgs = args.concat([].slice.call(arguments))
+          if (subArgs.length >= length) {
+            return fn.apply(this, subArgs)
+          } else {
+            return curry(fn, subArgs)
+          }
+        }
+      }
+      function curry(fn, ...args) {
+        if (args.length >= fn.length) {
+          return fn(...args)
+        } else {
+          return (...args2) => curry(fn, ...args, ...args2)
+        }
+      }
+      // es6 实现 function curry(fn, ...args) { return fn.length <= args.length ? fn(...args) : curry.bind(null, fn, ...args); }
+      var fn = curry(function (a, b, c) {
+        return [a, b, c]
+      })
+      // console.log(fn("a", "b", "c")) // ["a", "b", "c"]
+      // console.log(fn("a", "b")("c")) // ["a", "b", "c"]
+      // console.log(fn("a")("b")("c") )// ["a", "b", "c"]
+      // console.log(fn("a")("b", "c")) // ["a", "b", "c"]
+      // // 实现一个add方法，使计算结果能够满足如下预期：
+      // add(1)(2)(3) = 6;
+      // add(1, 2, 3)(4) = 10;
+      // add(1)(2)(3)(4)(5) = 15;
+
+      // function add() {
+      //     // 第一次执行时，定义一个数组专门用来存储所有的参数
+      //     var _args = Array.prototype.slice.call(arguments);
+
+      //     // 在内部声明一个函数，利用闭包的特性保存_args并收集所有的参数值
+      //     var _adder = function() {
+      //         _args = _args.concat([...arguments])
+      //         return _adder;
+      //     };
+
+      //     // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+      //     _adder.toString = function () {
+      //         return _args.reduce(function (a, b) {
+      //             return a + b;
+      //         },0);
+      //     }
+      //     return _adder;
+      // }
+      // 闭包原理
+      function add() {
+        let args = [...arguments]
+        let _adder = function () {
+          let _args = [...arguments]
+          if (_args.length === 0) {
+            return args.reduce((pre, cur) => pre + cur, 0)
+          } else {
+            args = args.concat(_args)
+            return _adder
+          }
+        }
+        return _adder
+      }
+      console.log(add(1)(2)(3)(4)())
+    </script>
+  </body>
+</html>

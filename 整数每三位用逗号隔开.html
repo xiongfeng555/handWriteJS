@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let num = 156412323.3324
+      function formatNumber(num) {
+        num = num.toString()
+        let decimals = num.indexOf('.') > -1 ? num.split('.')[1] : ''
+        let zhengshu = num.indexOf('.') > -1 ? num.split('.')[0] : num
+        let temp = decimals.length ? '.' + decimals : ''
+        let res
+        let len = zhengshu.length
+        if (len % 3 === 0) {
+          return num.slice(0, len).match(/\d{3}/g).join(',') + temp
+        } else {
+          return (
+            num.slice(0, len % 3) +
+            ',' +
+            num
+              .slice(len % 3, len)
+              .match(/\d{3}/g)
+              .join(',') +
+            temp
+          )
+        }
+      }
+      console.log(formatNumber(num))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const arr = [1, 2, 3, 4, 5, 6]
+      
+      // console.log(reader.read(‘1’)) // Error
+      // console.log(reader.read(-1)) // Error
+      // console.log(reader.read(1.5)) // Error
+      // console.log(reader.read()) // [1]
+      // console.log(reader.read(1)) // [2]
+      // console.log(reader.read(2)) // [3,4]
+      // console.log(reader.read(3)) // [5,6]
+      // console.log(reader.read()) // []
+      Array.prototype.getReader = function(){
+          let self = this // 保存当前数组
+          let head = 0 // 定义一个头变量
+          return {
+              read(n){
+                n = n || 1
+                if(typeof n === 'string' || !/^[1-9]\d*$/.test(n)){
+                    throw new Error('输入必须是整数')
+                }
+                if(head>=self.length){
+                    return []
+                }
+                let end = head + n
+                if(end>=self.length){
+                    end = self.length
+                }
+                let res = self.slice(head,end)
+                head = end
+                return res
+              }
+          }
+      }
+      const reader = arr.getReader()
+    //   console.log(reader.read('1')) // Error
+    //   console.log(reader.read(-1)) // Error
+    //   console.log(reader.read(1.5)) // Error
+      console.log(reader.read()) // [1]
+      console.log(reader.read(1)) // [2]
+      console.log(reader.read(2)) // [3,4]
+      console.log(reader.read(3)) // [5,6]
+      console.log(reader.read()) // []
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function makeRandomList(a,b,c){
+            if(b-a+1<c) return []
+            let res = []
+            let m = new Map()
+            for(let i=0;i<c;i++){
+                let random = Math.round(Math.random()*(b-a) + a)
+                while(m.get(random)){
+                    random = Math.round(Math.random()*(b-a) + a)
+                }
+                m.set(random,true)
+                res.push(random)
+            }
+            return res
+        }
+        let res = makeRandomList(1,100,50)
+        console.log(res)
+    </script>
+</body>
+</html>

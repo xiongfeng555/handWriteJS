@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 从前向后遍历，每次随机交换
+        function sortArray(arr){
+            let temp = [...arr]
+            for(let i=0;i<temp.length;i++){
+                let randomIndex = Math.round(Math.random() * (temp.length-1-i)) + i
+                let a = temp[i]
+                temp[i] = temp[randomIndex]
+                temp[randomIndex] = a
+            }
+            return temp
+        }
+        // 从后向前遍历
+        function sortArray2(arr){
+            let temp,randomIndex
+            for(let i=arr.length-1;i>0;i--){
+                randomIndex = Math.floor(Math.random() * (i + 1))
+                temp = arr[i]
+                arr[i] = arr[randomIndex]
+                arr[randomIndex] = temp
+            }
+            return arr
+        }
+        console.log(sortArray2([1,2,3,4,5,6,7,8,9]))
+        
+    </script>
+</body>
+</html>

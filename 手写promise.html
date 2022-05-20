@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const PENDING = 'pending'
+        const FULFILLED = 'fulfilled'
+        const REJECTED = 'rejected'
+        function MyPromise(executor){
+            let self = this
+            self.status = PENDING
+            self.value = null
+            self.error = null
+            self.onFulfilledCallback = []
+            self.onRejectedCallback = []
+            const resolved = function(value){
+                if(self.status!==PENDING) return
+                setTimeout(()=>{
+                    self.status = FULFILLED
+                    self.value = value
+                    self.onFulfilledCallback.forEach(callback=>callback(self.value))
+                })
+            } 
+            const rejected = function(error){
+                if(self.status!==PENDING) return
+                setTimeout(()=>{
+                    self.status = REJECTED
+                    self.error = error
+                    self.onRejectedCallback.forEach(callback=>callback(self.error))
+                })
+                
+            }
+            executor(resolved,rejected)
+        }
+        MyPromise.prototype.then = function(onFulfilled,onRejected){
+            // 处理两个回调函数不传的问题
+            onFulfilled = typeof onFulfilled === 'function'? onFulfilled:value => value
+            onRejected = typeof onRejected === 'function'? onRejected:error=>{throw error}
+            let self = this
+            let bridgePromise
+            if(this.status === PENDING){
+                return bridgePromise = new MyPromise((resolved,rejected)=>{
+                        self.onFulfilledCallback.push((value)=>{
+                            try {
+                                let x = onFulfilled(value) // 如果x也是一个MyPromise对象怎么办？
+                                resolvePromise(bridgePromise,x,resolved,rejected)
+                            } catch (error) {
+                                rejected(error)
+                            }
+                        })
+                        self.onRejectedCallback.push(error=>{
+                            try {
+                                let x = onRejected(error)
+                                resolvePromise(bridgePromise,x,resolved,rejected)
+                            } catch (error) {
+                                rejected(error)
+                            }
+                        })
+                    
+                })
+            }else if(this.status === FULFILLED){
+                return bridgePromise = new MyPromise((resolved,rejected)=>{
+                    try {
+                        let x = onFulfilled(self.value)
+                        resolvePromise(bridgePromise,x,resolved,rejected)
+                    } catch (error) {
+                        rejected(error)
+                    }
+                })                
+            }else{
+                return bridgePromise = new MyPromise((resolved,rejected)=>{
+                    try {
+                        let x = onRejected(self.error)
+                        resolvePromise(bridgePromise,x,resolved,rejected)
+                    } catch (error) {
+                        rejected(error)
+                    }
+                })
+                
+            }
+            return this
+        }
+        // promise.catch方法
+        MyPromise.prototype.catch = function(onRejected){
+            return this.then(null,onRejected)
+        }
+        // Promise.resolve方法
+        MyPromise.resolve = function(param){
+            if(param instanceof MyPromise) return param
+            return new MyPromise((resolved,rejected)=>{
+                if(param && param.then && typeof param.then === 'function'){
+                    param.then(resolved,rejected)
+                }else{
+                    resolved(param)
+                }
+            })
+        }
+        // promise.reject方法
+        MyPromise.allSettled = function(url = []){
+            return new MyPromise((resolved,rejected)=>{
+                let result = []
+                let len = url.length
+                if(len === 0){
+                    resolved(result)
+                    return
+                }
+                let count = 0
+                for(let i=0;i<len;i++){
+                    MyPromise.resolve(url[i]).then((value)=>{
+                        count++
+                        result[i] = value
+                        if(count>=len){
+                            resolved(result)
+                            return
+                        }
+                    },err=>{
+                        count++
+                        result[i] = err
+                        if(count>=len){
+                            resolved(result)
+                            return
+                        }
+                    })
+                }
+            })
+        }
+        MyPromise.reject = function(reason){
+            return new MyPromise((resolved,rejected)=>{
+                rejected(reason)
+            })
+        }
+        // Promise.all方法
+        MyPromise.all = function(promises){
+            return new MyPromise((resolved,rejected)=>{
+                let result = []
+                let index = 0
+                let len = promises.length
+                if(len===0){
+                    resolved(result);
+                    return
+                }
+                for(let i=0;i<len;i++){
+                    MyPromise.resolve(promises[i]).then(data=>{
+                        result[i] = data
+                        index++
+                        if(len===index) resolved(result)
+                    }).catch((error)=>{
+                        rejected(error)
+                    })
+                }
+            })
+        }
+        MyPromise.race = function(promises){
+            return new MyPromise((resolved,rejected)=>{
+                let len = promises.length
+                if(len === 0){
+                    resolved([])
+                }
+                for(let i=0;i<len;i++){
+                    MyPromise.resolve(promises[i]).then(data=>{
+                        resolve(data)
+                        return
+                    }).catch(error=>{
+                        rejected(error)
+                        return
+                    })
+                }
+            })
+        }
+        // Promise.finally 方法
+        MyPromise.prototype.finally = function(callback){
+            this.then(value=>{
+                return MyPromise.resolve(callback()).then((value)=>value)
+            },error=>{
+                return MyPromise.reject(callback()).then(()=>{
+                    throw error
+                })
+            })
+        }
+        // 拆解MyPromise直到返回不是MyPromise.
+        对象为止
+        function resolvePromise(bridgePromise,x,resolved,rejected){
+            if(x instanceof MyPromise){
+                if(x.status === PENDING){
+                    x.then(y=>{
+                        resolvePromise(bridgePromise,y,resolved,rejected)
+                    },error=>{
+                        rejected(error)
+                    })
+                }else{
+                    x.then(resolved,rejected)
+                }
+            }else{
+                resolved(x)
+            }
+        }
+        MyPromise.resolve().then(() => {
+    console.log(0);
+    return MyPromise.resolve(4);
+}).then((res) => {
+    console.log(res)
+})
+
+MyPromise.resolve().then(() => {
+    console.log(1);
+}).then(() => {
+    console.log(2);
+}).then(() => {
+    console.log(3);
+}).then(() => {
+    console.log(5);
+}).then(() =>{
+    console.log(6);
+})
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 匹配十六机制颜色值
+        let regColor = /#([0-9A-Fa-f]{6} | [0-9A-Fa-f]){3}/g
+        // 匹配日期 yyyy-mm-dd
+        let regDate = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/
+        // 匹配QQ号
+        let regQQ = /^[1-9][0-9]{4-10}$/g
+        // 匹配手机号
+        let regTele = /^1[34578]\d{9}$/g
+        let tele = '18314923570'
+        // 匹配用户名
+        let regUserName = /^[a-zA-Z\$][a-zA-Z_\$]{4,16}$/
+    </script>
+</body>
+</html>

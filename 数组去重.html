@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let arr = [1, 1, 2, 3, 4, 2, 4, 5, 6, 7, 4, 5, 6, 7, 8, 9]
+      //1.ES6 Set数据结构
+      // function uniqueArray(arr){
+      //     return Array.from(new Set(arr))
+      // }
+      // console.log(uniqueArray(arr))
+
+      //2.使用map数据结构
+      // function uniqueArray(arr){
+      //     let res = []
+      //     let m = new Map()
+      //     for(let i=0;i<arr.length;i++){
+      //         if(m.get(arr[i])){
+      //             continue;
+      //         }else{
+      //             m.set(arr[i],true)
+      //             res.push(arr[i])
+      //         }
+      //     }
+      //     return res
+      // }
+      // console.log(uniqueArray(arr))
+
+      //3.利用indexOf
+      // function uniqueArray(arr){
+      //     if(!Array.isArray(arr)){
+      //         return
+      //     }
+      //     let res = []
+      //     for(let i=0;i<arr.length;i++){
+      //         if(res.indexOf(arr[i]) === -1){
+      //             res.push(arr[i])
+      //         }
+      //     }
+      //     return res
+      // }
+      // 4. 利用sort
+      function uniqueArray(arr) {
+        if (!Array.isArray(arr)) {
+          return
+        }
+        arr.sort((a, b) => a - b)
+        let res = [arr[0]]
+        for (let i = 1; i < arr.length; i++) {
+          if (arr[i] !== arr[i - 1]) {
+            res.push(arr[i])
+          }
+        }
+        return res
+      }
+      console.log(uniqueArray(arr))
+    </script>
+  </body>
+</html>

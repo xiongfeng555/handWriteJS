@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let obj = {
+        a: 'a',
+        b: [1, { c: true }, [3]],
+        d: { e: undefined, f: 3 },
+        g: null,
+      }
+      //         {
+      //       a: "a",
+      //       b[0]: 1,
+      //       b[1].c: true,
+      //       b[2][0]: 3,
+      //       d.f: 3
+      //       // null和undefined直接舍去
+      //          }
+      function flattenObject(obj) {
+        let res = {}
+        function dfs(myobj, pre, res) {
+          if (typeof myobj !== 'object') {
+            return myobj
+          }
+          if (Array.isArray(myobj)) { // 如果是数组
+            for (let key in myobj) {
+              let ele = myobj[key]
+              if (ele && typeof ele === 'object') {
+                dfs(ele, `${pre ? pre : ''}[${key}]`, res)
+              } else {
+                if(ele){
+                  res[`${pre ? pre : ''}[${key}]`] = ele
+                }
+                
+              }
+            }
+          } else { // 如果是对象
+            for (let key in myobj) {
+              let ele = myobj[key]
+              if (ele && typeof ele === 'object') {
+                dfs(ele, `${pre ? pre + '.' : ''}${key}`, res)
+              } else {
+                if(ele){
+                  res[`${pre ? pre + '.' : ''}${key}`] = ele
+                }
+                
+              }
+            }
+          }
+        }
+        dfs(obj, '', res)
+        return res
+      }
+      console.log(flattenObject(obj))
+    </script>
+  </body>
+</html>

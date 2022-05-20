@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function objectFactory(){
+            let obj = new Object()
+            let constructor = Array.prototype.shift.call(arguments)
+            obj.__proto__ = constructor.prototype
+            let result = constructor.apply(obj,arguments)
+            let flag = result && typeof result === 'object' || typeof result === 'function' //result不是null且为引用类型时才可返回
+            return flag ? result : obj
+        }
+        function Student(name,age){
+            this.name = name
+            this.age = age
+        }
+        let stu = objectFactory(Student,'jack',30)
+        console.log(stu.hasOwnProperty('name'))
+    </script>
+</body>
+</html>

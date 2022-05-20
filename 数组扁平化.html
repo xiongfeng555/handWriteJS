@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [1,[2,3,[4,5]],[6,7],8,9]
+        //1.for循环递归
+        // function flatten(arr){
+        //     let result = []
+        //     for(let i=0;i<arr.length;i++){
+        //         if(Array.isArray(arr[i])){
+        //             result = result.concat(flatten(arr[i]))
+        //         }else{
+        //             result.push(arr[i])
+        //         }
+        //     }
+        //     return result
+        // }
+        // console.log(flatten(arr))
+        
+        //2.reduce迭代
+        // function flatten(arr){
+        //     return arr.reduce((pre,next)=>pre.concat(Array.isArray(next)?flatten(next):next),[])
+        // }
+        // console.log(flatten(arr))
+
+        //3.some + 拓展运算符方法
+        // function flatten(arr){
+        //     while(arr.some(item=>Array.isArray(item))){
+        //         arr = [].concat(...arr)
+        //     }
+        //     return arr
+        // }
+        // console.log(flatten(arr))
+
+        //4.split + toString()方法
+        // function flatten(arr){
+        //     return arr.toString().split(',').reduce((pre,next)=>{
+        //         return pre.concat(Number(next))
+        //     },[])
+        // }
+        // console.log(flatten(arr))
+
+        //5.ES6使用数组的flat([depth])其中depth表示要展开的层数
+        // function flatten(arr){
+        //     return arr.flat(Infinity)
+        // }
+        // console.log(flatten(arr))
+
+        //6.正则表达式 + JSON.stringify + JSON.parse
+        // function flatten(arr){
+        //     arr = JSON.stringify(arr)
+        //     arr = arr.replace(/\[|\]/g,'')
+        //     arr = '[' + arr + ']'
+        //     arr = JSON.parse(arr)
+        //     return arr
+        // }
+        // console.log(flatten(arr))
+    </script>
+</body>
+</html>

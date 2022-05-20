@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [1,23,4,5,6,7,8,9,10,12,1,6,5,5,5,7]
+        function chunk(arr,size){
+            let res = []
+            let com = []
+            for(let i=0;i<arr.length;i++){
+                com.push(arr[i])
+                if((i+1)%size === 0){
+                    res.push([...com])
+                    com = []
+                }
+                
+            }
+            if(com.length>0){
+                res.push(...com)
+            }
+            return res
+        }
+        console.log(chunk(arr,3))
+    </script>
+</body>
+</html>

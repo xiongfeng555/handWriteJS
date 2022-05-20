@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function hexTorgb(hex){
+            let rgb = []
+            if(/^\#[0-9a-z]{3}$/ig.test(hex)){
+                hex.replace(/[0-9a-z]/gi,function(matched){
+                    let temp = matched + matched
+                    rgb.push(temp)
+                })
+            }else if(/^\#[0-9a-z]{6}$/ig.test(hex)){
+                hex = hex.replace(/[0-9a-z]{2}/gi,function(matched){
+                    rgb.push(matched)
+                })
+            }else{
+                return new Error('传参不是16进制颜色类型')
+            }
+            console.log(rgb)
+            let color = rgb.map(item=>parseInt(item,16))
+            return `rgb(${color.join(',')})`
+        }
+        let color = '#aaa'
+        console.log(hexTorgb(color))
+    </script>
+</body>
+</html>

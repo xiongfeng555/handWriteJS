@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        position: relative;
+        overflow: hidden;
+      }
+      .box {
+        background: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="box"
+      style="
+        left: 200px;
+        top: 0px;
+        width: 200px;
+        height: 200px;
+        position: absolute;
+      "
+    ></div>
+    <script>
+      let box = document.getElementsByClassName('box')[0]
+      let mousedown = function(event){
+          box.style.border = '1px solid yellow'
+          let offsetX = parseInt(box.style.left)
+          let offsetY = parseInt(box.style.top)
+          let innerX = event.clientX - offsetX
+          let innerY = event.clientY - offsetY
+          document.onmousemove = function(e){
+              box.style.left = e.clientX - innerX + 'px'
+              box.style.top = e.clientY - innerY + 'px'
+              if(parseInt(box.style.left)<=0){
+                  box.style.left = '0px'
+              }
+              if(parseInt(box.style.top)<=0){
+                  box.style.top = '0px'
+              }
+              if(parseInt(box.style.left)>=window.innerWidth - parseInt(box.style.width)){
+                  box.style.left = window.innerWidth - parseInt(box.style.width) + 'px'
+              }
+              if(parseInt(box.style.top)>=window.innerHeight - parseInt(box.style.height)){
+                  box.style.top = window.innerHeight - parseInt(box.style.height) + 'px'
+              }
+          }
+          document.onmouseup = function(e){
+              document.onmousemove = null
+              document.onmouseup = null
+              box.style.border = ''
+          }
+      }
+      box.onmousedown = mousedown
+    </script>
+  </body>
+</html>

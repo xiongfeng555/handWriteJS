@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 被观察者
+        class Subject{
+            constructor(){
+                this.observeList = []
+            }
+            addObserve(observe){
+                this.observeList.push(observe)
+            }
+            removeObserve(name){
+                let index = observeList.findIndex(item=>item.name === name)
+                if(index>-1){
+                    this.observeList.splice(index,1)
+                }
+            }
+            notifyObserve(message){
+                this.observeList.forEach(observe=>{
+                    observe.notify(message)
+                })
+            }
+        }
+
+        class Observe{
+            constructor(name,subject){
+                this.name = name
+                if(subject){
+                    subject.addObserve(this)
+                }
+            }
+            notify(message){
+                console.log(this.name,message)
+            }
+        }
+    </script>
+</body>
+</html>

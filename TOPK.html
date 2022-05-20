@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 设计一个找到数据流中第 k 大元素的类（class）。注意是排序后的第 k 大元素，不是第 k 个不同的元素。
+
+      // 请实现 KthLargest 类：
+
+      // KthLargest(int k, int[] nums) 使用整数 k 和整数流 nums 初始化对象。
+      // int add(int val) 将 val 插入数据流 nums 后，返回当前数据流中第 k 大的元素。
+      /**
+       * @param {number} k
+       * @param {number[]} nums
+       */
+      // 总体思路是用小根堆来解决，小根堆中始终保持数组前k个大的值
+      var KthLargest = function (k, nums) {
+        this.k = k
+        this.queue = [null] // 先放null进去
+        for (let val of nums) {
+          this.add(val)
+        }
+      }
+
+      /**
+       * @param {number} val
+       * @return {number}
+       */
+      KthLargest.prototype.add = function (val) {
+        if (this.queue.length <= this.k) {
+          this.queue.push(val)
+          this.up(this.queue.length - 1) // 上浮
+        } else {
+          if (val > this.queue[1]) {
+            this.queue[1] = val
+            this.down(1) // 下沉
+          }
+        }
+        return this.queue[1]
+      }
+      KthLargest.prototype.up = function (idx) {
+        let parent = Math.floor(idx / 2) // 选择最后一个非叶子节点
+        if (parent >= 1 && this.queue[parent] > this.queue[idx]) {
+          swap(this.queue, parent, idx)
+          this.up(parent) // 递归上浮
+        }
+      }
+      KthLargest.prototype.down = function (idx) {
+        let index = idx
+        let left = idx * 2
+        // 与左节点进行比较
+        if (left < this.queue.length && this.queue[index] > this.queue[left]) {
+          index = left
+        }
+        // 与右节点进行比较
+        let right = idx * 2 + 1
+        if (
+          right < this.queue.length &&
+          this.queue[index] > this.queue[right]
+        ) {
+          index = right
+        }
+        if (index !== idx) {
+          swap(this.queue, index, idx)
+          this.down(index) // 递归下沉
+        }
+      }
+      function swap(arr, i, j) {
+        let temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+      }
+
+      /**
+       * Your KthLargest object will be instantiated and called as such:
+       * var obj = new KthLargest(k, nums)
+       * var param_1 = obj.add(val)
+       */
+    </script>
+  </body>
+</html>

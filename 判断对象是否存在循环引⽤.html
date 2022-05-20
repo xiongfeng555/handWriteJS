@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+    //   const isCycleObject = (obj, parent) => {
+    //     parent = parent || [obj]
+    //     let flag = false
+    //     for (let key in obj) {
+    //       if (typeof obj[key] === 'object') {
+    //         parent.forEach((parentAttr) => {
+    //           if (parentAttr === obj[key]) {
+    //             flag = true
+    //           }
+    //         })
+    //         if (flag) {
+    //           return true
+    //         }
+    //         flag = isCycleObject(obj[key], [...parent, obj[key]])
+    //         if (flag) return true
+    //       }
+    //     }
+    //     return false
+    //   }
+      const isCycleObject = (obj,m = new WeakMap())=>{
+          for(let key in obj){
+              if(obj[key] && typeof obj[key] === 'object'){
+                if(m.get(obj[key])){
+                    return true
+                }
+                m.set(obj[key],true)
+               if(isCycleObject(obj[key],m)){
+                   return true
+               }
+              }
+          }
+          return false
+      }
+      var a = {
+        b: {
+          c: {},
+        },
+      }
+
+      a.b.c.d = a
+      console.log(isCycleObject(a))
+    </script>
+  </body>
+</html>

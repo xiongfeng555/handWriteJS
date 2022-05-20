@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class EventEmitter{
+            constructor(){
+                this.event = {}
+            }
+            // 订阅者订阅事件
+            
+            on(type,cb){
+                if(!this.event[type]){
+                    this.event[type] = []
+                }
+                this.event.push(cb)
+            }
+            // 发布者发布事件
+            emit(type,...args){
+                if(this.event[type]){
+                    this.event[type].forEach(cb=>{
+                        cb(...args)
+                    })
+                }
+            }
+            off(type,cb){
+                if(this.event[type]){
+                    if(!cb) delete this.event[type]
+                    let index = this.event[type].findIndex(item=>item === cb)
+                    if(index>-1){
+                        this.event[type].splice(index,1)
+                    }
+                    if(!this.event[type]){
+                        delete this.event[type]
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
